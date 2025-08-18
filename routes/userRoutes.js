@@ -5,12 +5,12 @@ const {
   deleteUser,
   UpdateUser,
 } = require("../controllers/userController");
+const verifyToken = require("../middlewares/verifyToken");
 const router = require("express").Router();
-router.get("/", getUsers);
-router.get("/:userId", getUser);
-router.post("/", addUser);
-router.delete("/:userId", deleteUser);
-router.put("/:userId", UpdateUser);
-
+router.get("/", verifyToken, getUsers);
+router.get("/:userId", verifyToken, getUser);
+router.post("/", verifyToken, addUser);
+router.delete("/:userId", verifyToken, deleteUser);
+router.put("/:userId", verifyToken, UpdateUser);
 
 module.exports = router;
