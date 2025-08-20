@@ -18,7 +18,7 @@ const register = asyncWrapper(async (req, res, next) => {
     email,
     password,
   });
-  const token =await generateJWT({ email: newUser.email, id: newUser._id });
+  const token = await generateJWT({ email: newUser.email, id: newUser._id });
   newUser.token = token;
   res.status(200).json({ status: httpStatusText.SUCCESS, data: newUser });
 });
@@ -41,7 +41,7 @@ const login = asyncWrapper(async (req, res, next) => {
     error.status = 401;
     return next(error);
   }
-  const token =await generateJWT({ email: user.email, id: user._id });
+  const token = await generateJWT({ email: user.email, id: user._id });
   user.token = token;
   res.status(200).json({ status: httpStatusText.SUCCESS, data: user });
 });

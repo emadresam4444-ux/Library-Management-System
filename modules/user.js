@@ -31,9 +31,9 @@ userSchema = mongoose.Schema({
     enum: ["user", "Admin"],
     default: "user",
   },
-  token:{
-     type: String,
-  }
+  token: {
+    type: String,
+  },
 });
 
 userSchema.pre("save", async function (next) {

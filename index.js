@@ -13,15 +13,15 @@ app.use(cors());
 //2️⃣ Routes
 const userRoute = require("./routes/userRoutes");
 const authRoute = require("./routes/authRoutes");
-// const bookRoute=require('./routes/bookRoutes');
-// const borrowingRoute=require('./routes/borrowingRoute');
-// const authorRoute=require('./routes/authorRoute');
+ const bookRoute=require('./routes/bookRoutes');
+ const borrowingRoute=require('./routes/borrowingRoutes');
+ const authorRoute=require('./routes/authorRoutes');
 
 app.use("/users", userRoute);
 app.use("/auth", authRoute);
-// app.use('/user',bookRoute)
-// app.use('/user',borrowingRoute)
-// app.use('/user',authorRoute)
+ app.use('/book',bookRoute)
+ app.use('/borrow',borrowingRoute)
+ app.use('/author',authorRoute)
 app.use((req, res, next) => {
   res.status(404).json({
     status: httpStatusText.ERROR,
