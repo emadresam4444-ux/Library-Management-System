@@ -6,7 +6,7 @@ const asyncWrapper = require("../middlewares/asyncWrapper");
 const generateJWT = require("../utils/generateJWT");
 
 const register = asyncWrapper(async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
   const user = await userModel.findOne({ email });
   if (user) {
     const error = new Error("user already exists");
@@ -17,6 +17,8 @@ const register = asyncWrapper(async (req, res, next) => {
     username,
     email,
     password,
+    role,
+    avatar: req.file.filename,
   });
   const token = await generateJWT({ email: newUser.email, id: newUser._id });
   newUser.token = token;

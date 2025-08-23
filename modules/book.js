@@ -13,6 +13,9 @@ const bookSchema = mongoose.Schema({
   publishedYear: {
     type: Number,
   },
+  pdf: {
+    type: String,
+  },
 });
 
 const bookModel = mongoose.model("book", bookSchema);

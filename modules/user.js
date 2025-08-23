@@ -34,6 +34,10 @@ userSchema = mongoose.Schema({
   token: {
     type: String,
   },
+  avatar: {
+    type: String,
+    default: "../uploads/default-avatar.jpg",
+  },
 });
 
 userSchema.pre("save", async function (next) {
