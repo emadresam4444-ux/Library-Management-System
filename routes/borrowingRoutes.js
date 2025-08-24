@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const allowedTo = require("../middlewares/allowedTo");
+const userRoles = require("../utils/userRoles");
+const verifyToken = require("../middlewares/verifyToken");
 const {
   getBorrowings,
   getBorrowing,
@@ -9,10 +12,15 @@ const {
 } = require("../controllers/borrowingController");
 
 // REST APIs
-router.get("/", getBorrowings);
-router.get("/:borrowingId", getBorrowing);
-router.post("/", addBorrowing);
-router.put("/:borrowingId", updateBorrowing);
-router.delete("/:borrowingId", deleteBorrowing);
+router
+  .route("/")
+  .get(verifyToken, getBorrowings)
+  .post(verifyToken,allowedTo(userRoles.ADMIN), addBorrowing);
+
+router
+  .route("/:borrowingId")
+  .get(verifyToken, getBorrowing)
+  .put(verifyToken,allowedTo(userRoles.ADMIN,userRoles.AUTHOR), updateBorrowing)
+  .delete(verifyToken,allowedTo(userRoles.ADMIN), deleteBorrowing);
 
 module.exports = router;

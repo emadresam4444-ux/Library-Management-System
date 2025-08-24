@@ -33,9 +33,11 @@ app.use((req, res, next) => {
 
 //3️⃣ Not Found handler
 app.use((err, req, res, next) => {
-  res
-    .status(500)
-    .json({ status: httpStatusText.ERROR, message: err.message });
+  const statusCode = err.statusCode || 500; 
+  res.status(statusCode).json({
+    status: httpStatusText.ERROR,
+    message: err.message,
+  });
 });
 
 //4️⃣ Database connection

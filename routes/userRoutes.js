@@ -7,10 +7,17 @@ const {
 } = require("../controllers/userController");
 const verifyToken = require("../middlewares/verifyToken");
 const router = require("express").Router();
-router.get("/", verifyToken, getUsers);
-router.get("/:userId", verifyToken, getUser);
-router.post("/", verifyToken, addUser);
-router.delete("/:userId", verifyToken, deleteUser);
-router.put("/:userId", verifyToken, UpdateUser);
+const allowedTo = require("../middlewares/allowedTo");
+const userRoles = require("../utils/userRoles");
+router
+  .route("/")
+  .get(verifyToken, getUsers)
+  .post(verifyToken, allowedTo(userRoles.ADMIN), addUser);
+
+router
+  .route("/:userId")
+  .get(verifyToken, getUser)
+  .put(verifyToken, allowedTo(userRoles.ADMIN), UpdateUser)
+  .delete(verifyToken, allowedTo(userRoles.ADMIN), deleteUser);
 
 module.exports = router;

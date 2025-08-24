@@ -16,7 +16,10 @@ module.exports = (req, res, next) => {
         message: "Token not provided in header",
       });
     }
-    jwt.verify(token, process.env.JWT_SCRET_KEY);
+    
+    const currentUser= jwt.verify(token, process.env.JWT_SCRET_KEY);
+     req.currentUser=currentUser;
+      
     next();
   } catch (err) {
     res.status(401).json({ status: httpStatusText.fail, data: err.message });

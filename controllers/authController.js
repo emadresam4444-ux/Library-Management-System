@@ -13,17 +13,24 @@ const register = asyncWrapper(async (req, res, next) => {
     error.status = 400;
     return next(error);
   }
+  const avatarFileName = req.file ? req.file.filename : undefined;
   const newUser = await userModel.create({
     username,
     email,
     password,
     role,
-    avatar: req.file.filename,
+    avatar: avatarFileName,
   });
-  const token = await generateJWT({ email: newUser.email, id: newUser._id });
+  const token = await generateJWT({
+    email: newUser.email,
+    id: newUser._id,
+    role: newUser.role,
+  });
   newUser.token = token;
   res.status(200).json({ status: httpStatusText.SUCCESS, data: newUser });
 });
+
+
 const login = asyncWrapper(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -43,7 +50,11 @@ const login = asyncWrapper(async (req, res, next) => {
     error.status = 401;
     return next(error);
   }
-  const token = await generateJWT({ email: user.email, id: user._id });
+  const token = await generateJWT({
+    email: user.email,
+    id: user._id,
+    role: user.role,
+  });
   user.token = token;
   res.status(200).json({ status: httpStatusText.SUCCESS, data: user });
 });
